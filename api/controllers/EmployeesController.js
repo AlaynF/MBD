@@ -10,13 +10,26 @@ module.exports = {
 		var data = req.body;
 
 		if (data.passcode) {
-			Employees.find({
+			Employees.findOne({
 				passcode: data.passcode
-			}).exec(function (err, employees) {
+			}).exec(function (err, employee) {
 				if (err) {
 					console.log('Error: Employees - get_by_passcode - ', err);
 				}
-				res.json(employees);
+
+				if (employee && employee.id) {
+					res.json({
+						success: true,
+						user: employee
+					});
+
+					//LETS SET COOKIE
+					req.session.user = employee.id;
+				} else {
+					res.json({
+						success: false
+					});
+				}
 			});
 		}
 	},
