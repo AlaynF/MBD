@@ -45,17 +45,14 @@ module.exports = {
 
 	get_open_by_employee: function (req, res) {
 		var data = req.body;
-		var query = '';
 
-		if (!data.id) {
+		if (!data.id && !req.user.id) {
 			res.send('No Task Time ID.');
+			res.status('400');
 			return;
 		}
 
-		query += 'SELECT * from task_times WHERE account_id = ? AND end_time IS NULL;';
-		query.replace('?', data.id);
-
-		Task_times.query(query).exec(function (err, times) {
+		Task_times.findOpen((data.id || req.user.id), function (err, times) {
 			if (err) {
 				console.log('Error: Task_times - get_open_by_employee - ', err);
 			}
@@ -67,19 +64,37 @@ module.exports = {
 	create: function (req, res) {
 		var data = req.body;
 
-		if (data && data.task_id) {
-			Task_times.create({
-				task_id: data.task_id,
-				start_time: data.start_time,
-				pause_time: data.pause_time,
-				end_time: data.end_time,
-				workorder_id: data.workorder_id
-			}).exec(function (err, times) {
-				if (err) {
-					console.log('Error: Task_times - create - ', err);
-				}
-			});
+		if (!data || data.task_id) {
+			res.send('No Task Info.');
+			res.status('400');
+			return;
 		}
+
+		Task_times.findOpen((data.id || req.user.id), function (err, times) {
+			if (err) {
+				console.log('Error: Task_times - get_open_by_employee - ', err);
+			}
+
+			if (!times) {
+				Task_times.create({
+					task_id: data.task_id,
+					start_time: data.start_time,
+					pause_time: data.pause_time,
+					end_time: data.end_time,
+					workorder_id: data.workorder_id
+				}).exec(function (err, times) {
+					if (err) {
+						console.log('Error: Task_times - create - ', err);
+					}
+
+					res.send('Ok');
+				});
+			} else if (times) {
+				//CREATE BATCH!!!
+			}
+		});
+
+
 	},
 
 	update: function (req, res) {

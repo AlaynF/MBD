@@ -2,11 +2,14 @@
 <html>
   <head>
     <title>MBD Repair Tools</title>
+	<base href="/">
 
     <!-- Viewport mobile tag for sensible mobile support -->
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
 	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular.min.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.1/angular-route.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui/0.4.0/angular-ui.min.js"></script>
 
 	<link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700,800' rel='stylesheet' type='text/css'>
 
@@ -17,16 +20,65 @@
   </head>
 
   <body ng-app="mbd">
+	  <section ng-controller="Navigation" class="hero is-dark">
+		<div class="hero-header">
+			<header class="header">
+				<div class="container">
+					<div class="header-left">
+						<img src="/images/logo.png" width="150px;" alt="" class="header-item">
+					</div>
+
+					<span id="header-toggle" class="header-toggle">
+				      <span></span>
+				      <span></span>
+				      <span></span>
+				    </span>
+
+					<div class="header-right header-menu">
+						<span ng-show="last_user" class="header-item">
+							Last User: {{last_user.name}}
+						</span>
+					</div>
+				</div>
+			</header>
+		</div>
+		<div class="hero-content">
+	    	<div class="container">
+				<h1 class="title">
+					MBD Repair Tools
+				</h1>
+				<h2 class="subtitle">
+					{{title}}
+				</h2>
+			</div>
+		</div>
+	</section>
+
     <%- body %>
 
+	<div id="view" ng-view autoscroll="true">
+	</div>
+
+	<footer class="footer">
+		<div class="container">
+			<div class="content is-text-centered">
+				<p>
+					<strong>© MBD Wheel and Brake Repair and Services, LLC 2012-2016</strong>
+				</p>
+			</div>
+		</div>
+	</footer>
+
     <!--TEMPLATES-->
-    
+
     <!--TEMPLATES END-->
 
 
     <!--SCRIPTS-->
     <script src="/js/dependencies/sails.io.js"></script>
     <script src="/js/mbd.js"></script>
+    <script src="/js/controllers/login.js"></script>
+    <script src="/js/controllers/navigation.js"></script>
     <!--SCRIPTS END-->
   </body>
 </html>
