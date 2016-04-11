@@ -11,20 +11,33 @@ function (vm, http, $timeout, $window, root) {
 
 	vm.passcode = '';
 
-    vm.keypadclick = function(number) {
-        if (!number) {
-            $scope.passcode = '';
-            return;
-        }
+	vm.keypadclick = function(number) {
+		if (!number) {
+			vm.passcode = '';
+			return;
+		}
 
-        vm.passcode += number;
+		vm.passcode += number;
 
-        if (vm.passcode == "12345") {
-            $window.location.href  = "/register";
-        }
+		if  (vm.passcode.length > 8) {
+			vm.passcode = '';
+			return;
+		}
 
-        if  (vm.passcode.length > 5) {
-            alert("Password too long");
-        }
-    }
+		if  (vm.passcode.length > 4) {
+			http.post('/api/employees/get_by_passcode', {
+				passcode: vm.passcode
+			}).success(function (data) {
+				if (data.success) {
+					if (data.user) {
+						delete data.user.passcode;
+
+						root.user = data.user;
+
+						$window.location.href = "/dashboard"
+					}
+				}
+			});
+		}
+	}
 }]);
