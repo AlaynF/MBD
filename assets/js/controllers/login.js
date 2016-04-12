@@ -4,7 +4,8 @@ mbd.controller('Login', [
 	"$timeout",
 	"$window",
 	"$rootScope",
-function (vm, http, $timeout, $window, root) {
+	'$location',
+function (vm, http, $timeout, $window, root, $location) {
 	document.title = 'Login - MBD Repair Tools';
 
 	root.$broadcast('changeTitle', {title: 'Login'});
@@ -34,7 +35,7 @@ function (vm, http, $timeout, $window, root) {
 
 						root.user = data.user;
 
-						$window.location.href = "/dashboard"
+						$location.path('/dashboard')
 					}
 				}
 			});

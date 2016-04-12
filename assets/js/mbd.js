@@ -8,7 +8,7 @@ window.mbd = angular.module('mbd', ['ngRoute']);
 mbd.config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
 	$routeProvider
 	.when('/', {
-		template: " ", // just fire controller
+		templateUrl: '/api/view/render/homepage', // just fire controller
 		controller: 'Login',
 	})
 	.when('/logout', {
@@ -31,15 +31,7 @@ mbd.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
 	})
 	.when('/:controller', {
 		templateUrl: function (params) {
-			if (params.searchTitle) {
-				if (params.searchTitle === '') {
-					return '/view/movies';
-				} else {
-					return '/api/view/render/' + params.controller;
-				}
-			} else {
-				return '/api/view/render/' + params.controller;
-			}
+			return '/api/view/render/' + params.controller + '_index';
 		},
 		controller: ['$scope', '$routeParams', '$controller', function ($scope, $routeParams, $controller) {
 			var controller, nameRegEx;

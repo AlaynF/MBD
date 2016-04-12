@@ -18,13 +18,13 @@ module.exports = {
 				}
 
 				if (employee && employee.id) {
+					//LETS SET COOKIE
+					req.session.user = employee.id;
+
 					res.json({
 						success: true,
 						user: employee
 					});
-
-					//LETS SET COOKIE
-					req.session.user = employee.id;
 				} else {
 					res.json({
 						success: false
