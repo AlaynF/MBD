@@ -8,8 +8,18 @@
 module.exports = {
 
 	attributes: {
-		id: 'INTEGER',
-		name: 'STRING'
+		id: {
+			type: 'integer',
+			primaryKey: true,
+			required: true
+		},
+		name: 'STRING',
+
+
+		task_times: {
+			collection: 'task_times',
+			via: 'task_id'
+		}
 	}
 };
 

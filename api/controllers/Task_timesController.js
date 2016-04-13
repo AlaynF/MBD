@@ -7,7 +7,7 @@
 
 module.exports = {
 	get_all: function (req, res) {
-		Task_times.find().exec(function (err, times) {
+		Task_times.find().populate('task_id').exec(function (err, times) {
 			if (err) {
 				console.log('Error: Task_times - get_all - ', err);
 			}
@@ -44,15 +44,18 @@ module.exports = {
 	},
 
 	get_open_by_employee: function (req, res) {
+		var employee_id;
 		var data = req.body;
 
-		if (!data.id && !req.user.id) {
-			res.send('No Task Time ID.');
+		if ((!data || !data.id) && !req.user.id) {
+			res.send('No Task Time Employee ID.');
 			res.status('400');
 			return;
 		}
 
-		Task_times.findOpen((data.id || req.user.id), function (err, times) {
+		employee_id = data ? data.id : req.user.id;
+
+		Task_times.findOpen(employee_id, function (err, times) {
 			if (err) {
 				console.log('Error: Task_times - get_open_by_employee - ', err);
 			}
@@ -62,39 +65,57 @@ module.exports = {
 	},
 
 	create: function (req, res) {
+		var saveData = {};
 		var data = req.body;
 
-		if (!data || data.task_id) {
+		if (!data || !data.task_id) {
 			res.send('No Task Info.');
 			res.status('400');
 			return;
 		}
 
-		Task_times.findOpen((data.id || req.user.id), function (err, times) {
+		if (req.user && req.user.id) {
+			saveData.employee_id = req.user.id;
+		}
+
+		if (data.task_id) {
+			saveData.task_id = data.task_id;
+		}
+
+		if (data.workorder_reference) {
+			saveData.workorder_reference = data.workorder_reference;
+		}
+
+		Workorders.findOrCreate({
+			reference:saveData.workorder_reference
+		}, {
+			reference:saveData.workorder_reference
+		}).exec(function (err, workorder) {
 			if (err) {
-				console.log('Error: Task_times - get_open_by_employee - ', err);
+				console.log('Error: Task_times (Workorders) - get_open_by_employee - ', err);
 			}
 
-			if (!times) {
-				Task_times.create({
-					task_id: data.task_id,
-					start_time: data.start_time,
-					pause_time: data.pause_time,
-					end_time: data.end_time,
-					workorder_id: data.workorder_id
-				}).exec(function (err, times) {
-					if (err) {
-						console.log('Error: Task_times - create - ', err);
-					}
+			if (workorder) {
+				saveData.workorder_id = workorder.id;
 
-					res.send('Ok');
+				Task_times.findOpen((data.id || req.user.id), function (err, times) {
+					if (!times || times.length == 0) {
+						saveData.start_time = new Date();
+
+						Task_times.create(saveData)
+						.exec(function (err, times) {
+							if (err) {
+								console.log('Error: Task_times - create - ', err);
+							}
+
+							res.send('Ok');
+						});
+					} else if (times) {
+						//CREATE BATCH!!!
+					}
 				});
-			} else if (times) {
-				//CREATE BATCH!!!
 			}
 		});
-
-
 	},
 
 	update: function (req, res) {

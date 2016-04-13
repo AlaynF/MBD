@@ -1,4 +1,16 @@
 <div class="section">
+	<div ng-if="openTasks && openTasks.length > 0" class="container">
+		<h1 class="title is-2">Your Open Tasks</h1>
+
+		<table class="table is-bordered is-striped is-narrow">
+			<thead>
+				<tr><td>Hello</td></tr>
+			</thead>
+			<tbody>
+
+			</tbody>
+		</table>
+	</div>
 	<div class="container">
 		<h1 class="title is-2">Your Actions</h1>
 
@@ -43,17 +55,27 @@
 					<h1 class="title is-2">New Task</h1>
 					<h2 class="subtitle is-3">{{newTaskTime | date:'medium'}}</h2>
 
+					<p class="control has-addons">
+						<span class="select is-large">
+							<select ng-model="workorder_pre">
+								<option value="">NONE</option>
+								<option value="w3423">W3423</option>
+							</select>
+						</span>
+
+						<input ng-model="workorder" class="input is-large" type="text" placeholder="Workorder Number...">
+					</p>
+
 					<p>
 						<span class="select is-large">
-							<select>
-								<option>Select Task</option>
-								<option>Cleaning</option>
-								<option>Acid</option>
+							<select ng-model="task" ng-disabled="!workorder">
+								<option value="">Select Task</option>
+								<option value="{{task.id}}" ng-repeat="task in tasks">{{task.name}}</option>
 							</select>
 						  </span>
 					</p>
 
-					<button class="button is-large is-success">Start Task</button>
+					<button ng-click="startTask()" ng-disabled="!workorder || !task" class="button is-large is-success">Start Task</button>
 				</div>
 			</div>
 		</div>

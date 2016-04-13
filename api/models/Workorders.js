@@ -9,7 +9,7 @@ module.exports = {
 
 	attributes: {
 		id: 'INTEGER',
-		reference_id: 'STRING'
+		reference: 'STRING'
 	}
 };
 

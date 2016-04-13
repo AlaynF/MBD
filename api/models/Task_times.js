@@ -7,8 +7,16 @@
 
 module.exports = {
 	attributes: {
-		id: 'INTEGER',
-		task_id: 'INTEGER',
+		id: {
+			type: 'integer',
+			primaryKey: true,
+			required: true
+		},
+		task_id: {
+			unique: true,
+			model: 'tasks'
+		},
+		employee_id: 'INTEGER',
 		start_time: 'DATETIME',
 		pause_time: 'DATETIME',
 		end_time: 'DATETIME',
@@ -19,10 +27,10 @@ module.exports = {
 	findOpen: function (user_id, callback) {
 		var query = '';
 
-		query += 'SELECT * from task_times WHERE account_id = ? AND end_time IS NULL;';
-		query.replace('?', user_id);
+		query += 'SELECT * from task_times WHERE employee_id = ? AND end_time IS NULL;';
+		query = query.replace('?', user_id);
 
-		Task_times.query(query).exec(function (err, times) {
+		Task_times.query(query, function (err, times) {
 			if (err) {
 				console.log('Error: Task_times - findOpen - ', err);
 			}
