@@ -9,13 +9,13 @@ module.exports = {
 	attributes: {
 		id: {
 			type: 'integer',
-			primaryKey: true,
-			required: true
+			primaryKey: true
 		},
 		task_id: {
 			unique: true,
 			model: 'tasks'
 		},
+		total_time: 'FLOAT',
 		employee_id: 'INTEGER',
 		start_time: 'DATETIME',
 		pause_time: 'DATETIME',
@@ -27,7 +27,14 @@ module.exports = {
 	findOpen: function (user_id, callback) {
 		var query = '';
 
-		query += 'SELECT * from task_times WHERE employee_id = ? AND end_time IS NULL;';
+		query += 'SELECT task_times.*, tasks.name as task_name ';
+		query += 'FROM task_times  ';
+		query += 'LEFT JOIN tasks ON ( ';
+		query += '	tasks.id = task_times.task_id ';
+		query += ') ';
+		query += 'WHERE employee_id = ? AND end_time IS NULL ';
+		query += '	AND end_time IS NULL; ';
+
 		query = query.replace('?', user_id);
 
 		Task_times.query(query, function (err, times) {

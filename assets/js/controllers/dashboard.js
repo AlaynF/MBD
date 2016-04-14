@@ -19,10 +19,10 @@ function (vm, http, $timeout, $window, root) {
 		vm.tasks = data;
 	});
 
-	http.get('/api/task_times/get_open_by_employee')
+	(getOpenTasks = function() {http.get('/api/task_times/get_open_by_employee')
 	.success(function ( data) {
 		vm.openTasks = data;
-	});
+	})})();
 
 	vm.sayHello = function () {
 		console.log('hello');
@@ -48,16 +48,21 @@ function (vm, http, $timeout, $window, root) {
 
 		workorder_reference = (vm.workorder_pre || "") + vm.workorder;
 
-		console.log({
-			workorder_reference: workorder_reference,
-			task_id: vm.task
-		});
-
 		http.post('/api/task_times/create', {
 			workorder_reference: workorder_reference,
 			task_id: vm.task
 		}).success(function (data) {
-			console.log(data);
+			vm.openNewTask = false;
+			getOpenTasks();
+		});
+	}
+
+	vm.stopTask = function (task) {
+		http.post('/api/task_times/stop_task', {
+			id: task.id,
+			workorder_id: task.workorder_id
+		}).success(function () {
+			getOpenTasks();
 		});
 	}
 }]);

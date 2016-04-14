@@ -2,12 +2,27 @@
 	<div ng-if="openTasks && openTasks.length > 0" class="container">
 		<h1 class="title is-2">Your Open Tasks</h1>
 
+		<button ng-click="newTask()" class="button is-large is-success">Start New Task</button>
+		<hr>
 		<table class="table is-bordered is-striped is-narrow">
 			<thead>
-				<tr><td>Hello</td></tr>
+				<tr>
+					<td>Workorder</td>
+					<td>Task</td>
+					<td>Status</td>
+					<td>Actions</td>
+				</tr>
 			</thead>
 			<tbody>
-
+				<tr ng-repeat="task in openTasks">
+					<td>{{task.workorder_reference}}</td>
+					<td>{{task.task_name}}</td>
+					<td>OPEN</td>
+					<td>
+						<button ng-click="stopTask(task)" class="button is-large is-warning">PAUSE</button>
+						<button ng-click="stopTask(task)" class="button is-large is-danger">STOP</button>
+					</td>
+				</tr>
 			</tbody>
 		</table>
 	</div>

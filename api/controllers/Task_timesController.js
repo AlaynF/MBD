@@ -118,6 +118,59 @@ module.exports = {
 		});
 	},
 
+	stop_task: function (req, res) {
+		var data = req.body;
+
+		if (!req.user || !data.id || !data.workorder_id) {
+			res.send('No Task Time ID.');
+			return;
+		}
+
+		Task_batches.findOne({
+			status: 'opened',
+			workorder_id: data.workorder_id
+		}).exec(function (err, batch) {
+			if (err) {
+				console.log('Error: Task_times (Task_batches) - stop_task - ', err);
+				return;
+			}
+
+			if (batch && batch.id) {
+
+			} else {
+				Task_times.findOne({
+					id: data.id
+				}).exec(function (err, time) {
+					var add_time;
+
+					if (err) {
+						console.log('Error: Task_times (Task_times) - stop_task - ', err);
+						return;
+					}
+
+					if (time.pause_time) {
+						add_time = Math.abs(time.pause_time - new Date()) / (1000 * 60); /// MiliSeconds -> Minutes
+					} else {
+						add_time = Math.abs(time.start_time - new Date()) / (1000 * 60); /// MiliSeconds -> Minutes
+					}
+
+					time.total_time = parseFloat(add_time);
+
+					time.end_time = new Date();
+
+					time.save(function (err, t) {
+						if (err) {
+							console.log('Error: Task_times (Task_times / Save) - stop_task - ', err);
+							return;
+						}
+					})
+
+					res.send('OK');
+				});
+			}
+		})
+	},
+
 	update: function (req, res) {
 		var data = req.body;
 
