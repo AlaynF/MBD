@@ -4,7 +4,8 @@ mbd.controller('Dashboard', [
 	"$timeout",
 	"$window",
 	"$rootScope",
-function (vm, http, $timeout, $window, root) {
+	"$location",
+function (vm, http, $timeout, $window, root, $location) {
 	document.title = 'Dashboard - MBD Repair Tools';
 
 	root.$broadcast('changeTitle', {title: 'Dashboard'});
@@ -34,8 +35,12 @@ function (vm, http, $timeout, $window, root) {
 	}
 
 	vm.optionAction = function (action) {
-		if (vm[action]) {
-			vm[action]();
+		if (action.indexOf('/') == 0) {
+			$location.path(action);
+		} else {
+			if (vm[action]) {
+				vm[action]();
+			}
 		}
 	}
 
@@ -53,6 +58,24 @@ function (vm, http, $timeout, $window, root) {
 			task_id: vm.task
 		}).success(function (data) {
 			vm.openNewTask = false;
+			getOpenTasks();
+		});
+	}
+
+	vm.continueTask = function (task) {
+		http.post('/api/task_times/continue_task', {
+			id: task.id,
+			workorder_id: task.workorder_id
+		}).success(function () {
+			getOpenTasks();
+		});
+	}
+
+	vm.pauseTask = function (task) {
+		http.post('/api/task_times/pause_task', {
+			id: task.id,
+			workorder_id: task.workorder_id
+		}).success(function () {
 			getOpenTasks();
 		});
 	}

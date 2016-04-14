@@ -1,0 +1,59 @@
+<div class="section">
+	<div class="container">
+		<h1 class="title is-2">Admin Actions</h1>
+
+		<hr>
+
+		<div class="columns">
+			<div class="column is-one-third">
+				<div class="card is-full-width">
+					<header class="card-header">
+						<p class="card-header-title">Users</p>
+					</header>
+
+					<div ng-click="optionAction('/users')" class="card-content">
+						<div class="content">
+							<p class="has-text-centered">
+								<span class="icon is-large">
+								  <i class="fa fa-user"></i>
+								</span>
+							</p>
+							<p class="has-text-centered">Create, View and Edit Users</p>
+						</div>
+					</div>
+
+					<footer class="card-footer">
+						<a ng-click="optionAction('/users')" ng-repeat="action in option.actions" class="card-footer-item">
+							Go To Users
+						</a>
+					</footer>
+				</div>
+			</div>
+
+			<div class="column is-one-third">
+				<div class="card is-full-width">
+					<header class="card-header">
+						<p class="card-header-title">Tasks</p>
+					</header>
+
+					<div ng-click="optionAction('/users')" class="card-content">
+						<div class="content">
+							<p class="has-text-centered">
+								<span class="icon is-large">
+								  <i class="fa fa-user"></i>
+								</span>
+							</p>
+							<p class="has-text-centered">Create, View and Edit Users</p>
+						</div>
+					</div>
+
+					<footer class="card-footer">
+						<a ng-click="optionAction('/users')" ng-repeat="action in option.actions" class="card-footer-item">
+							Go To Users
+						</a>
+					</footer>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

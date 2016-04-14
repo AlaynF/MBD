@@ -14,8 +14,7 @@ module.exports = {
 		passcode: 'STRING',
 		name: 'STRING',
 		email:{
-			type: 'email',
-			required: true
+			type: 'email'
 		},
 		admin: 'BOOLEAN'
 	}

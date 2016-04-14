@@ -118,6 +118,76 @@ module.exports = {
 		});
 	},
 
+	continue_task: function (req, res) {
+		var data = req.body;
+
+		if (!req.user || !data.id || !data.workorder_id) {
+			res.send('No Task Time ID.');
+			return;
+		}
+
+		Task_times.findOne({
+			id: data.id
+		}).exec(function (err, time) {
+			var add_time;
+
+			if (err) {
+				console.log('Error: Task_times (Task_times) - continue_task - ', err);
+				return;
+			}
+
+			time.start_time = new Date();
+
+			time.pause_time = null;
+
+			time.save(function (err, t) {
+				if (err) {
+					console.log('Error: Task_times (Task_times / Save) - continue_task - ', err);
+					return;
+				}
+			})
+
+			res.send('OK');
+		});
+	},
+
+	pause_task: function (req, res) {
+		var data = req.body;
+
+		if (!req.user || !data.id || !data.workorder_id) {
+			res.send('No Task Time ID.');
+			return;
+		}
+
+		Task_times.findOne({
+			id: data.id
+		}).exec(function (err, time) {
+			var add_time;
+
+			if (err) {
+				console.log('Error: Task_times (Task_times) - pause_task - ', err);
+				return;
+			}
+
+			if (time.start_time) {
+				add_time = Math.abs(time.start_time - new Date()) / (1000 * 60); /// MiliSeconds -> Minutes
+			}
+
+			time.total_time = parseFloat(add_time);
+
+			time.pause_time = new Date();
+
+			time.save(function (err, t) {
+				if (err) {
+					console.log('Error: Task_times (Task_times / Save) - pause_task - ', err);
+					return;
+				}
+			})
+
+			res.send('OK');
+		});
+	},
+
 	stop_task: function (req, res) {
 		var data = req.body;
 

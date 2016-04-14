@@ -17,12 +17,6 @@ mbd.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
 		},
 		controller: 'Logout'
 	})
-	.when('/admin', {
-		templateUrl: function (params) {
-			return '/admin';
-		},
-		controller: 'Admin'
-	})
 	.when('/invite', {
 		templateUrl: function (params) {
 			return '/api/view/render/user_invite';
