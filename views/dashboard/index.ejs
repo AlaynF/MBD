@@ -35,8 +35,8 @@
 
 		<hr>
 
-		<div class="columns is-multiline">
-			<div class="column is-one-third" ng-repeat="option in options">
+		<div class="columns is-multiline is-mobile">
+			<div class="column is-one-third is-one-third-mobile" ng-repeat="option in options">
 				<div class="card is-full-width">
 					<header class="card-header">
 						<p class="card-header-title">{{option.title}}</p>
@@ -70,28 +70,36 @@
 	<div class="modal-container">
 		<div class="modal-content">
 			<div class="box">
-				<div class="content has-text-centered">
+				<div class="content">
 					<h1 class="title is-2">New Task</h1>
 					<h2 class="subtitle is-3">{{newTaskTime | date:'medium'}}</h2>
 
+					<label class="label">Workorder Number</label>
 					<p class="control has-addons">
-						<span class="select is-large">
+						<span class="select">
 							<select ng-model="workorder_pre">
 								<option value="">NONE</option>
 								<option value="w3423">W3423</option>
 							</select>
 						</span>
 
-						<input ng-model="workorder" class="input is-large" type="text" placeholder="Workorder Number...">
+						<input ng-model="workorder" class="input" type="text" placeholder="Workorder Number...">
 					</p>
 
+					<label class="label">Task</label>
 					<p>
-						<span class="select is-large">
+						<span class="select">
 							<select ng-model="task" ng-disabled="!workorder">
 								<option value="">Select Task</option>
 								<option value="{{task.id}}" ng-repeat="task in tasks">{{task.name}}</option>
 							</select>
 						  </span>
+					</p>
+
+					<label class="label">Notes</label>
+
+					<p class="control">
+						<textarea ng-model="notes" class="textarea" placeholder="Notes.."></textarea>
 					</p>
 
 					<button ng-click="startTask()" ng-disabled="!workorder || !task" class="button is-large is-success">Start Task</button>

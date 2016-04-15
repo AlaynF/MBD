@@ -8,8 +8,13 @@
 module.exports = {
 
 	attributes: {
-		id: 'INTEGER',
-		shop_id: 'INTEGER',
+		id: {
+			type: 'integer',
+			primaryKey: true
+		},
+		shop_id: {
+			model: 'shops'
+		},
 		name: 'STRING',
 		passcode: 'STRING',
 		name: 'STRING',

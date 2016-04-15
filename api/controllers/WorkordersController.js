@@ -30,10 +30,20 @@ module.exports = {
 	},
 
 	get_by_employee: function (req, res) {
-		if (req.params.id) {
-			Workorders.find({
-				employee_id: req.params.id
-			}).exec(function (err, workorders) {
+		var query = '';
+
+		query += 'SELECT * ';
+		query += 'FROM workorders ';
+		query += 'WHERE id IN ( ';
+		query += '	SELECT workorder_id ';
+		query += '    FROM task_times ';
+		query += '    WHERE employee_id = ? ';
+		query += ') ';
+
+		if (req.query.eid) {
+			query = query.replace('?', req.query.eid);
+
+			Workorders.query(query, function (err, workorders) {
 				if (err) {
 					console.log('Error: Workorders - get_by_employee - ', err);
 				}

@@ -55,7 +55,8 @@ function (vm, http, $timeout, $window, root, $location) {
 
 		http.post('/api/task_times/create', {
 			workorder_reference: workorder_reference,
-			task_id: vm.task
+			task_id: vm.task,
+			notes: vm.notes
 		}).success(function (data) {
 			vm.openNewTask = false;
 			getOpenTasks();

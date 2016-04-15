@@ -1,0 +1,39 @@
+<div class="section">
+	<div class="container">
+		<h2 class="title is-2">
+			Workorders {{employee ? 'with ' + employee.name : ''}}
+		</h2>
+
+		<div class="columns">
+			<div class="column">
+				<label class="label">Search</label>
+				<p class="control">
+					<input class="input" type="text" placeholder="Workorder ID or Reference">
+				</p>
+			</div>
+		</div>
+
+		<hr>
+
+		<table class="table is-bordered is-narrow">
+			<thead>
+				<tr>
+					<td>ID</td>
+					<td>Reference</td>
+					<td>Created</td>
+					<td>Actions</td>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="workorder in workorders">
+					<td>{{workorder.id}}</td>
+					<td>{{workorder.reference}}</td>
+					<td>{{workorder.createdAt | date: 'MMM dd, yyyy'}}</td>
+					<td>
+						<a href="/admin/task_times?wid={{employee.id}}" class="button is-primary">View Task Times</a>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>

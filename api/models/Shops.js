@@ -8,9 +8,17 @@
 module.exports = {
 
 	attributes: {
-		id: 'INTEGER',
+		id: {
+			type: 'integer',
+			primaryKey: true
+		},
 		symbol: 'STRING',
-		name: 'STRING'
+		name: 'STRING',
+
+		employees: {
+			collection: 'employees',
+			via: 'shop_id'
+		}
 	}
 };
 

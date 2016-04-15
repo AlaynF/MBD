@@ -38,6 +38,9 @@
 				    </span>
 
 					<div class="header-right header-menu">
+						<span ng-show="$root.user" class="header-item">
+							<a href="/dashboard">Dashboard</a>
+						</span>
 						<span ng-show="last_user" class="header-item">
 							Last User: {{last_user.name}}
 						</span>
@@ -54,6 +57,11 @@
 					{{title}}
 				</h2>
 			</div>
+		</div>
+
+		<div class="notification is-danger is-flash" ng-show="showError == true;">
+		  <button ng-click="dismissError()" class="delete"></button>
+			{{ errorMessage }}
 		</div>
 	</section>
 
@@ -82,6 +90,7 @@
     <script src="/js/mbd.js"></script>
     <script src="/js/controllers/admin.js"></script>
     <script src="/js/controllers/admin_employees.js"></script>
+    <script src="/js/controllers/admin_workorders.js"></script>
     <script src="/js/controllers/dashboard.js"></script>
     <script src="/js/controllers/login.js"></script>
     <script src="/js/controllers/navigation.js"></script>

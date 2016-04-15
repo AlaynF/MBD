@@ -12,7 +12,6 @@ module.exports = {
 			primaryKey: true
 		},
 		task_id: {
-			unique: true,
 			model: 'tasks'
 		},
 		total_time: 'FLOAT',
@@ -21,7 +20,8 @@ module.exports = {
 		pause_time: 'DATETIME',
 		end_time: 'DATETIME',
 		workorder_id: 'INTEGER',
-		workorder_reference: 'STRING'
+		workorder_reference: 'STRING',
+		notes: 'text'
 	},
 
 	findOpen: function (user_id, callback) {

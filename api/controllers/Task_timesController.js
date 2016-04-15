@@ -86,6 +86,10 @@ module.exports = {
 			saveData.workorder_reference = data.workorder_reference;
 		}
 
+		if (data.notes) {
+			saveDate.notes = notes;
+		}
+
 		Workorders.findOrCreate({
 			reference:saveData.workorder_reference
 		}, {

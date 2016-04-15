@@ -4,7 +4,18 @@
 			Employees
 		</h2>
 
-		<button ng-click="newEmployee()" class="button is-success is-medium">Create New Employee</button>
+		<div class="columns">
+			<div class="column">
+				<button ng-click="newEmployee()" class="button is-success is-medium">Create New Employee</button>
+			</div>
+
+			<div class="column">
+				<label class="label">Search</label>
+				<p class="control">
+					<input class="input" type="text" placeholder="Search by employee name or email..">
+				</p>
+			</div>
+		</div>
 
 		<hr>
 
@@ -13,7 +24,8 @@
 				<tr>
 					<td>ID</td>
 					<td>Name</td>
-					<td>Shop ID</td>
+					<td>Admin</td>
+					<td>Shop</td>
 					<td>Email</td>
 					<td>Actions</td>
 				</tr>
@@ -22,11 +34,13 @@
 				<tr ng-repeat="employee in employees">
 					<td>{{employee.id}}</td>
 					<td>{{employee.name}}</td>
-					<td>{{employee.shop_id}}</td>
+					<td>{{employee.admin}}</td>
+					<td>{{employee.shop_id.name}}</td>
 					<td>{{employee.email}}</td>
 					<td>
-						<button class="button is-success">Edit Employee</button>
-						<button class="button is-danger">Delete Employee</button>
+						<a href="/admin/workorders?eid={{employee.id}}" class="button is-primary">View Workorders</a>
+						<button ng-click="editEmployee(employee)" class="button is-success">Edit Employee</button>
+						<button ng-click="deleteEmployee(employee)" class="button is-danger">Delete Employee</button>
 					</td>
 				</tr>
 			</tbody>
@@ -41,24 +55,25 @@
 		<div class="modal-content">
 			<div class="box">
 				<div class="content">
-					<h1 class="title is-2">New Employee</h1>
+					<h1 ng-if="editing == false" class="title is-2">New Employee</h1>
+					<h1 ng-if="editing == true" class="title is-2">Edit Employee</h1>
 
 					<label class="label">Name</label>
 					<p class="control">
-						<input class="input" type="text" placeholder="Full Name..">
+						<input ng-model="employee.name" class="input" type="text" placeholder="Full Name..">
 					</p>
 					<label class="label">Email</label>
 					<p class="control">
-						<input class="input" type="text" placeholder="Email..">
+						<input ng-model="employee.email" class="input" type="text" placeholder="Email..">
 					</p>
 					<label class="label">Passcode</label>
 					<p class="control">
-						<input class="input" type="password" placeholder="Passcode..">
+						<input  ng-model="employee.passcode" class="input" type="password" placeholder="Passcode..">
 					</p>
 					<label class="label">Shop</label>
 					<p>
 						<span class="select is-medium">
-							<select ng-model="task">
+							<select  ng-model="employee.shop_id">
 								<option value="">Select Shop</option>
 								<option value="{{shop.id}}" ng-repeat="shop in shops">{{shop.name}}</option>
 							</select>
@@ -68,16 +83,17 @@
 					<label class="label">Is admin?</label>
 					<p class="control">
 						<label class="radio">
-							<input type="radio" name="question">
+							<input  ng-model="employee.admin" value="true" type="radio" name="question">
 							Yes
 						</label>
 						<label class="radio">
-							<input type="radio" name="question">
+							<input ng-model="employee.admin" value="false" type="radio" name="question">
 							No
 						</label>
 					</p>
 
-					<button ng-click="startTask()" ng-disabled="!workorder || !task" class="button is-large is-success">Create Employee</button>
+					<button ng-if="editing == false" ng-click="createEmployee()" ng-disabled="!employee.name || !employee.passcode" class="button is-large is-success">Create Employee</button>
+					<button ng-if="editing == true" ng-click="submitEditEmployee()" ng-disabled="!employee.name || !employee.passcode" class="button is-large is-success">Edit Employee</button>
 				</div>
 			</div>
 		</div>

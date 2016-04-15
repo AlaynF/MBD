@@ -4,7 +4,8 @@ mbd.controller('Navigation', [
 	"$timeout",
 	"$window",
 	"$rootScope",
-function (vm, http, $timeout, $window, root) {
+	"$timeout",
+function (vm, http, $timeout, $window, root, $timeout) {
 	vm.$on('changeTitle', function (event, args) {
 		vm.title = args.title;
 	});
@@ -19,4 +20,17 @@ function (vm, http, $timeout, $window, root) {
 			vm.last_user = root.user;
 		}
 	});
+
+	vm.$on('errorFlash', function (event, message) {
+		vm.errorMessage = message;
+		vm.showError = true;
+
+		$timeout(function () {
+			vm.showError = false;
+		}, 7000);
+	});
+
+	vm.dismissError = function () {
+		vm.showError = false;
+	}
 }]);
