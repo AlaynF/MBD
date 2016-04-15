@@ -24,6 +24,7 @@
 			<thead>
 				<tr>
 					<td>Task</td>
+					<td>Notes</td>
 					<td>Employee</td>
 					<td>Time Taken (Minutes)</td>
 					<td>Start Date</td>
@@ -34,6 +35,7 @@
 			<tbody>
 				<tr ng-repeat="tasktime in tasktimes">
 					<td>{{tasktime.task_id.name}}</td>
+					<td>{{tasktime.notes}}</td>
 					<td>{{tasktime.employee_id.name}}</td>
 					<td>{{tasktime.total_time}}</td>
 					<td>{{tasktime.start_time | date:'medium'}}</td>

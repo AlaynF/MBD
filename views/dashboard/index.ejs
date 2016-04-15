@@ -25,6 +25,7 @@
 						<button ng-if="!task.pause_time" ng-click="pauseTask(task)" class="button is-large is-warning">PAUSE</button>
 						<button ng-if="task.pause_time" ng-click="continueTask(task)" class="button is-large is-success">CONTINUE</button>
 						<button ng-click="stopTask(task)" class="button is-large is-danger">STOP</button>
+						<button ng-click="addNote(task)" class="button is-large is-primary">Add Note</button>
 					</td>
 				</tr>
 			</tbody>

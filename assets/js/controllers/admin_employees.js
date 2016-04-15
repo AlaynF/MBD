@@ -56,10 +56,10 @@ function (vm, http, $timeout, $window, root, $location) {
 			if (data) {
 				if (data.error) {
 					root.$broadcast('errorFlash', data.error);
+				} else {
+					vm.openNewEmployee = false;
 				}
 			}
-
-			vm.openNewEmployee = false;
 		});
 	}
 
@@ -71,10 +71,10 @@ function (vm, http, $timeout, $window, root, $location) {
 			if (data) {
 				if (data.error) {
 					root.$broadcast('errorFlash', data.error);
+				} else {
+					vm.openNewEmployee = false;
 				}
 			}
-
-			vm.openNewEmployee = false;
 		});
 	}
 
