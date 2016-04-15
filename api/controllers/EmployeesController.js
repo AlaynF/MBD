@@ -140,8 +140,13 @@ module.exports = {
 			return;
 		}
 
+		delete data.createdAt;
+		delete data.updatedAt;
+
+		console.log(data);
+
 		Employees.update({
-			id: data.id
+			passcode: data.passcode
 		}, data).exec(function (err, employee) {
 			if (err) {
 				console.log('Error: Employees - edit - ', err);

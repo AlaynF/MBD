@@ -1,4 +1,4 @@
-mbd.controller('AdminWorkorders', [
+mbd.controller('AdminTasktimes', [
 	"$scope",
 	"$http",
 	"$timeout",
@@ -13,12 +13,11 @@ function (vm, http, $timeout, $window, root, $location, $routeParams) {
 		// $location.path('/');
 	}
 
-	console.log($routeParams.eid);
 
 	if ($routeParams.eid) {
-		http.get('/api/workorders/get_by_employee?eid=' + $routeParams.eid)
+		http.get('/api/task_times/get_by_employee?id=' + $routeParams.eid)
 		.success(function (data) {
-			vm.workorders = data;
+			vm.tasktimes = data;
 
 			console.log(data);
 		});
@@ -27,10 +26,22 @@ function (vm, http, $timeout, $window, root, $location, $routeParams) {
 		.success(function (data) {
 			vm.employee = data;
 		});
-	} else {
-		(getWorkorders = function () {http.get('/api/workorders/get_all')
+	} else if ($routeParams.wid) {
+		http.get('/api/task_times/get_by_workorder?id=' + $routeParams.wid)
 		.success(function (data) {
-			vm.workorders = data;
+			vm.tasktimes = data;
+
+			console.log(data);
+		});
+
+		http.get('/api/workorders/get_by_id?id=' + $routeParams.wid)
+		.success(function (data) {
+			vm.workorder = data;
+		});
+	} else {
+		(getTasktimes = function () {http.get('/api/task_times/get_all')
+		.success(function (data) {
+			vm.tasktimes = data;
 
 			console.log(data);
 		})})();

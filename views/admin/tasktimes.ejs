@@ -1,14 +1,15 @@
 <div class="section">
 	<div class="container">
 		<h2 class="title is-2">
-			Workorders {{employee ? 'with ' + employee.name : ''}}
+			Task Times {{workorder ? '(Workorder ' + workorder.reference + ')' : ''}}
 		</h2>
 
 		<div class="columns">
 			<div class="column">
 				<button ng-click="goBack()" class="button is-primary is-medium">Go Back</button>
-				<a href="/dashboard" class="button is-success is-medium">Back to Dashboard</a>
+				<a href="/dashboard" class="button is-success is-medium">Go to Dashboard</a>
 			</div>
+
 			<div class="column">
 				<label class="label">Search</label>
 				<p class="control">
@@ -22,19 +23,23 @@
 		<table class="table is-bordered is-narrow">
 			<thead>
 				<tr>
-					<td>ID</td>
-					<td>Reference</td>
-					<td>Created</td>
+					<td>Task</td>
+					<td>Employee</td>
+					<td>Time Taken (Minutes)</td>
+					<td>Start Date</td>
+					<td>End Date</td>
 					<td>Actions</td>
 				</tr>
 			</thead>
 			<tbody>
-				<tr ng-repeat="workorder in workorders">
-					<td>{{workorder.id}}</td>
-					<td>{{workorder.reference}}</td>
-					<td>{{workorder.createdAt | date: 'MMM dd, yyyy'}}</td>
+				<tr ng-repeat="tasktime in tasktimes">
+					<td>{{tasktime.task_id.name}}</td>
+					<td>{{tasktime.employee_id.name}}</td>
+					<td>{{tasktime.total_time}}</td>
+					<td>{{tasktime.start_time | date:'medium'}}</td>
+					<td>{{tasktime.end_time | date:'medium'}}</td>
 					<td>
-						<a href="/admin/tasktimes?wid={{workorder.id}}" class="button is-primary">View Task Times</a>
+
 					</td>
 				</tr>
 			</tbody>

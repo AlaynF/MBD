@@ -7,15 +7,7 @@
 
 module.exports = {
 	get_options: function (req, res) {
-		var options = [{
-			title: 'Start Task',
-			icon: 'fa fa-clock-o',
-			description: 'Start task..',
-			actions: [{
-				'name': 'New Workorder',
-				'action': 'newTask'
-			}]
-		}];
+		var options =[];
 
 		if (req.user) {
 			if (req.user.admin) {
@@ -30,8 +22,28 @@ module.exports = {
 				});
 
 				options.push({
-					title: 'Tasks',
+					title: 'Task Times',
+					icon: 'fa fa-tasks',
+					description: 'View and Edit Task Times',
+					actions: [{
+						'name': 'Go To Task Times',
+						'action': '/admin/tasktimes'
+					}]
+				});
+
+				options.push({
+					title: 'Workorders',
 					icon: 'fa fa-file-text',
+					description: 'View and Edit Workorders',
+					actions: [{
+						'name': 'Go To Workorders',
+						'action': '/admin/workorders'
+					}]
+				});
+
+				options.push({
+					title: 'Tasks',
+					icon: 'fa fa-list-ol',
 					description: 'Create, View and Edit Tasks',
 					actions: [{
 						'name': 'Go To Tasks',
@@ -40,15 +52,25 @@ module.exports = {
 				});
 
 				options.push({
-					title: 'Administration',
-					icon: 'fa fa-file-text',
-					description: 'All the administration options..',
+					title: 'Shops',
+					icon: 'fa fa-home',
+					description: 'Create, View and Edit Shops',
 					actions: [{
-						'name': 'Go To Admin',
-						'action': '/admin'
+						'name': 'Go To Workorders',
+						'action': '/admin/shops'
 					}]
 				});
 			}
+
+			options.push({
+				title: 'Start Task',
+				icon: 'fa fa-clock-o',
+				description: 'Start task..',
+				actions: [{
+					'name': 'New Workorder',
+					'action': 'newTask'
+				}]
+			});
 			res.send(options);
 		} else {
 			res.send([]);

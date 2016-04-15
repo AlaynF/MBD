@@ -19,16 +19,65 @@ module.exports = {
 	create: function (req, res) {
 		var data = req.body;
 
+		console.log(data);
+
 		if (data && data.name) {
 			Shops.create({
 				name: data.name,
 				symbol: data.symbol
-			}).exec(function (err, employee) {
+			}).exec(function (err, shop) {
 				if (err) {
 					console.log('Error: Shops - create - ', err);
 				}
+
+				res.send('OK');
 			});
 		}
+	},
+
+	edit: function (req, res) {
+		var data = req.body;
+
+		if (!data || !data.id || !data.name) {
+			res.json({error: 'There was an error processing your request.'});
+			return;
+		}
+
+		Shops.update({
+			id: data.id
+		}, {
+			name: data.name,
+			symbol: data.symbol
+		}).exec(function (err, shop) {
+			if (err) {
+				console.log('Error: Shops - edit - ', err);
+				res.json({error: 'There was an error'});
+				return;
+			}
+
+			res.send('OK');
+		});
+	},
+
+	delete: function (req, res) {
+		var data = req.body;
+
+		if (!data || !data.id) {
+			res.json({error: 'There was an error processing your request.'});
+			return;
+		}
+
+		Shops.destroy({
+			id: data.id
+		}).exec(function (err) {
+			if (err) {
+				console.log('Error: Shops - delete - ', err);
+				res.json({error: 'There was an error'});
+				return;
+			}
+
+			res.send('OK');
+		});
 	}
 };
 

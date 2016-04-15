@@ -22,19 +22,7 @@ function (vm, http, $timeout, $window, root, $location) {
 	http.get('/api/shops/get_all')
 	.success(function (data) {
 		vm.shops = data;
-
-		console.log(data);
 	});
-
-	vm.optionAction = function (action) {
-		if (action.indexOf('/') == 0) {
-			$location.path(action);
-		} else {
-			if (vm[action]) {
-				vm[action]();
-			}
-		}
-	}
 
 	vm.newEmployee = function () {
 		vm.newTaskTime = new Date();
@@ -97,4 +85,8 @@ function (vm, http, $timeout, $window, root, $location) {
 			getEmployees();
 		});
 	}
+
+	vm.goBack = function () {
+		$window.history.back();
+	};
 }]);

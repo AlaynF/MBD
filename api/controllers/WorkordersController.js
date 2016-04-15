@@ -29,6 +29,20 @@ module.exports = {
 		}
 	},
 
+	get_by_id: function (req, res) {
+		if (req.query.id) {
+			Workorders.findOne({
+				id: req.query.id
+			}).exec(function (err, workorder) {
+				if (err) {
+					console.log('Error: Workorders - get_by_id - ', err);
+				}
+
+				res.json(workorder)
+			});
+		}
+	},
+
 	get_by_employee: function (req, res) {
 		var query = '';
 
@@ -52,6 +66,8 @@ module.exports = {
 			});
 		}
 	},
+
+
 
 	create: function (req, res) {
 		var data = req.body;

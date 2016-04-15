@@ -15,7 +15,9 @@ module.exports = {
 			model: 'tasks'
 		},
 		total_time: 'FLOAT',
-		employee_id: 'INTEGER',
+		employee_id: {
+			model: 'employees'
+		},
 		start_time: 'DATETIME',
 		pause_time: 'DATETIME',
 		end_time: 'DATETIME',

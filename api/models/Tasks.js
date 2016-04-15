@@ -10,8 +10,7 @@ module.exports = {
 	attributes: {
 		id: {
 			type: 'integer',
-			primaryKey: true,
-			required: true
+			primaryKey: true
 		},
 		name: 'STRING',
 

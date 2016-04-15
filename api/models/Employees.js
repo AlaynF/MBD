@@ -21,7 +21,13 @@ module.exports = {
 		email:{
 			type: 'email'
 		},
-		admin: 'BOOLEAN'
+		admin: 'BOOLEAN',
+
+
+		task_times: {
+			collection: 'task_times',
+			via: 'employee_id'
+		}
 	}
 };
 

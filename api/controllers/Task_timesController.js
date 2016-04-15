@@ -7,7 +7,7 @@
 
 module.exports = {
 	get_all: function (req, res) {
-		Task_times.find().populate('task_id').exec(function (err, times) {
+		Task_times.find().populate('task_id').populate('employee_id').sort('end_time DESC').exec(function (err, times) {
 			if (err) {
 				console.log('Error: Task_times - get_all - ', err);
 			}
@@ -30,16 +30,34 @@ module.exports = {
 	},
 
 	get_by_employee: function (req, res) {
-		if (req.params.id) {
+		if (req.query.id) {
 			Task_times.find({
-				employee_id: req.params.id
-			}).exec(function (err, times) {
+				employee_id: req.query.id
+			}).populate('employee_id').populate('task_id').exec(function (err, times) {
 				if (err) {
 					console.log('Error: Task_times - get_by_employee - ', err);
 				}
 
 				res.json(times)
 			});
+		} else {
+			res.send([]);
+		}
+	},
+
+	get_by_workorder: function (req, res) {
+		if (req.query.id) {
+			Task_times.find({
+				workorder_id: req.query.id
+			}).populate('employee_id').populate('task_id').exec(function (err, times) {
+				if (err) {
+					console.log('Error: Task_times - get_by_employee - ', err);
+				}
+
+				res.json(times)
+			});
+		} else {
+			res.send([]);
 		}
 	},
 

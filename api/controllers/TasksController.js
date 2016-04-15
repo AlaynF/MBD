@@ -28,6 +28,46 @@ module.exports = {
 				res.json(tasks)
 			});
 		}
+	},
+
+	create: function (req, res) {
+		var data = req.body;
+
+
+		if (data && data.name) {
+			Tasks.create({
+				name: data.name
+			}).exec(function (err, shop) {
+				if (err) {
+					console.log('Error: Tasks - create - ', err);
+				}
+
+				res.send('OK');
+			});
+		}
+	},
+
+	edit: function (req, res) {
+		var data = req.body;
+
+		if (!data || !data.id || !data.name) {
+			res.json({error: 'There was an error processing your request.'});
+			return;
+		}
+
+		Tasks.update({
+			id: data.id
+		}, {
+			name: data.name
+		}).exec(function (err, task) {
+			if (err) {
+				console.log('Error: Tasks - edit - ', err);
+				res.json({error: 'There was an error'});
+				return;
+			}
+
+			res.send('OK');
+		});
 	}
 };
 
