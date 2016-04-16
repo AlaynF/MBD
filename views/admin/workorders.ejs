@@ -12,7 +12,7 @@
 			<div class="column">
 				<label class="label">Search</label>
 				<p class="control">
-					<input class="input" type="text" placeholder="Workorder ID or Reference">
+					<input ng-model="search.query" ng-model-options="{ debounce: 250 }" class="input" type="text" placeholder="Workorder ID or Reference">
 				</p>
 			</div>
 		</div>

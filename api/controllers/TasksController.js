@@ -30,6 +30,22 @@ module.exports = {
 		}
 	},
 
+	get_by_id: function (req, res) {
+		if (req.params.id) {
+			Tasks.findOne({
+				id: req.params.id
+			}).exec(function (err, task) {
+				if (err) {
+					console.log('Error: Tasks - get_by_id - ', err);
+				}
+
+				res.json(task)
+			});
+		} else {
+			res.json({});
+		}
+	},
+
 	create: function (req, res) {
 		var data = req.body;
 

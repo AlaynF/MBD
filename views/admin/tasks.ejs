@@ -26,6 +26,7 @@
 					<td>{{task.id}}</td>
 					<td>{{task.name}}</td>
 					<td>
+						<a href="/admin/tasktimes?tid={{task.id}}" class="button is-primary">View Times</a>
 						<button ng-click="editTask(task)" class="button is-success">Edit Task</button>
 						<button ng-click="deleteTask(task)" class="button is-danger">Delete Task</button>
 					</td>

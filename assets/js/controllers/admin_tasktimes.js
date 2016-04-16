@@ -13,6 +13,15 @@ function (vm, http, $timeout, $window, root, $location, $routeParams) {
 		// $location.path('/');
 	}
 
+	var getTasktimes = function () {
+		http.get('/api/task_times/get_all')
+		.success(function (data) {
+			vm.tasktimes = data;
+
+			console.log(data);
+		});
+	};
+
 
 	if ($routeParams.eid) {
 		http.get('/api/task_times/get_by_employee?id=' + $routeParams.eid)
@@ -26,6 +35,8 @@ function (vm, http, $timeout, $window, root, $location, $routeParams) {
 		.success(function (data) {
 			vm.employee = data;
 		});
+
+		vm.exportUrl = '/api/task_times/export?eid=' + $routeParams.eid;
 	} else if ($routeParams.wid) {
 		http.get('/api/task_times/get_by_workorder?id=' + $routeParams.wid)
 		.success(function (data) {
@@ -38,16 +49,46 @@ function (vm, http, $timeout, $window, root, $location, $routeParams) {
 		.success(function (data) {
 			vm.workorder = data;
 		});
-	} else {
-		(getTasktimes = function () {http.get('/api/task_times/get_all')
+
+		vm.exportUrl = '/api/task_times/export?wid=' + $routeParams.wid;
+	} else if ($routeParams.tid) {
+		http.get('/api/task_times/get_by_task?id=' + $routeParams.tid)
 		.success(function (data) {
 			vm.tasktimes = data;
 
 			console.log(data);
-		})})();
+		});
+
+		http.get('/api/tasks/get_by_id?id=' + $routeParams.tid)
+		.success(function (data) {
+			vm.task = data;
+		});
+
+		vm.exportUrl = '/api/task_times/export?tid=' + $routeParams.tid;
+	} else {
+		vm.exportUrl = '/api/task_times/export?all=t';
+		getTasktimes();
 	}
 
 	vm.goBack = function () {
 		$window.history.back();
 	};
+
+	vm.$watch('search.query', function(a,b) {
+		console.log('hmm', a,b);
+		if (vm.search && vm.search.query && vm.search.query.length > 2) {
+			http.get('/api/task_times/search?q=' + encodeURI(vm.search.query))
+			.success(function (data) {
+				vm.tasktimes = data;
+			});
+		} else if (a || b) {
+			getTasktimes();
+		}
+	});
+
+	vm.export = function () {
+		if ($routeParams.eid) {
+			http.get('/api/task_times/export?eid=' + $routeParams.eid);
+		}
+	}
 }]);

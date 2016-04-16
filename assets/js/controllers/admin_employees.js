@@ -6,7 +6,7 @@ mbd.controller('AdminEmployees', [
 	"$rootScope",
 	"$location",
 function (vm, http, $timeout, $window, root, $location) {
-	console.log(root.user);
+	vm.listedShops = {};
 
 	if (!root.user || !root.user.admin) {
 		// $location.path('/');
@@ -16,7 +16,11 @@ function (vm, http, $timeout, $window, root, $location) {
 	.success(function (data) {
 		vm.employees = data;
 
-		console.log(data);
+		data.forEach(function (employee) {
+			vm.listedShops[employee.shop_id.name] = true;
+		});
+
+		console.log(vm.listedShops);
 	})})();
 
 	http.get('/api/shops/get_all')
@@ -58,6 +62,7 @@ function (vm, http, $timeout, $window, root, $location) {
 					root.$broadcast('errorFlash', data.error);
 				} else {
 					vm.openNewEmployee = false;
+					getEmployees();
 				}
 			}
 		});
@@ -88,5 +93,28 @@ function (vm, http, $timeout, $window, root, $location) {
 
 	vm.goBack = function () {
 		$window.history.back();
+	};
+
+
+	vm.$watch('search.query', function() {
+		if (vm.search && vm.search.query && vm.search.query.length > 2) {
+			http.get('/api/employees/search?q=' + encodeURI(vm.search.query))
+			.success(function (data) {
+				vm.employees = data;
+			});
+		} else {
+			getEmployees();
+		}
+	});
+
+
+	vm.filterEmployees = function (employee) {
+		if (vm.filter && vm.filter.shop) {
+			if (vm.filter.shop != employee.shop_id.name) {
+				return false;
+			}
+		}
+
+		return true;
 	};
 }]);

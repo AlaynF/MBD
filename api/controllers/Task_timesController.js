@@ -4,10 +4,13 @@
  * @description :: Server-side logic for managing tasks_times
  * @help        :: See http://sailsjs.org/#!/documentation/concepts/Controllers
  */
+var json2csv = require('json2csv');
 
 module.exports = {
 	get_all: function (req, res) {
-		Task_times.find().populate('task_id').populate('employee_id').sort('end_time DESC').exec(function (err, times) {
+		var skip = req.query.skip;
+
+		Task_times.find().populate('task_id').populate('employee_id').sort('end_time DESC').skip(skip || 0).limit(50).exec(function (err, times) {
 			if (err) {
 				console.log('Error: Task_times - get_all - ', err);
 			}
@@ -52,6 +55,22 @@ module.exports = {
 			}).populate('employee_id').populate('task_id').exec(function (err, times) {
 				if (err) {
 					console.log('Error: Task_times - get_by_employee - ', err);
+				}
+
+				res.json(times)
+			});
+		} else {
+			res.send([]);
+		}
+	},
+
+	get_by_task: function (req, res) {
+		if (req.query.id) {
+			Task_times.find({
+				task_id: req.query.id
+			}).populate('employee_id').populate('task_id').exec(function (err, times) {
+				if (err) {
+					console.log('Error: Task_times - get_by_task - ', err);
 				}
 
 				res.json(times)
@@ -304,6 +323,112 @@ module.exports = {
 				if (err) {
 					console.log(err);
 				}
+			});
+		}
+	},
+
+	search: function (req, res) {
+		var query = req.query.q;
+		var skip = req.query.skip;
+
+		if (!query) {
+			res.json([]);
+			return;
+		}
+
+		Task_times.find({
+			or: [
+				{workorder_id: {'contains': query}},
+				{workorder_reference: {'contains': query}}
+			]
+		}).populate('task_id').populate('employee_id').sort('end_time DESC').skip(skip || 0).limit(50).exec(function (err, times) {
+			if (err) {
+				console.log('Error: Task_times - search - ', err);
+				res.json([]);
+				return;
+			}
+
+			res.json(times);
+		});
+	},
+
+	export: function (req, res) {
+		var reference = req.query;
+
+		if (!reference) {
+			res.json({error: 'No reference ID exporting.'});
+			return;
+		}
+
+		if (reference.all) {
+			Task_times.find().populate('employee_id').populate('task_id').exec(function (err, times) {
+				var fields = ['employee_id.name', 'task_id.name', 'workorder_reference', 'start_time', 'end_time', 'total_time'];
+
+				if (err) {
+					console.log('Error: Task_times - export - ', err);
+				}
+
+				json2csv({ data: times, fields: fields }, function(err, csv) {
+					if (err) {
+						console.log(err);
+					}
+					res.set({"Content-Disposition":"attachment; filename=\"all_times.csv\""});
+					res.send(csv);
+				});
+			});
+		} else if (reference.tid) {
+			Task_times.find({
+				task_id: reference.tid
+			}).populate('employee_id').populate('task_id').exec(function (err, times) {
+				var fields = ['employee_id.name', 'task_id.name', 'workorder_reference', 'start_time', 'end_time', 'total_time'];
+
+				if (err) {
+					console.log('Error: Task_times - export - ', err);
+				}
+
+				json2csv({ data: times, fields: fields }, function(err, csv) {
+					if (err) {
+						console.log(err);
+					}
+					res.set({"Content-Disposition":"attachment; filename=\"task_times.csv\""});
+					res.send(csv);
+				});
+			});
+		} else if (reference.wid) {
+			Task_times.find({
+				workorder_id: reference.wid
+			}).populate('employee_id').populate('task_id').exec(function (err, times) {
+				var fields = ['employee_id.name', 'task_id.name', 'workorder_reference', 'start_time', 'end_time', 'total_time'];
+
+				if (err) {
+					console.log('Error: Task_times - export - ', err);
+				}
+
+				json2csv({ data: times, fields: fields }, function(err, csv) {
+					if (err) {
+						console.log(err);
+					}
+					res.set({"Content-Disposition":"attachment; filename=\"" + times[0].workorder_reference + "_times.csv" +"\""});
+					res.send(csv);
+				});
+			});
+		} else if (reference.eid) {
+			Task_times.find({
+				employee_id: reference.eid
+			}).populate('employee_id').populate('task_id').exec(function (err, times) {
+				var fields = ['employee_id.name', 'task_id.name', 'workorder_reference', 'start_time', 'end_time', 'total_time'];
+
+				if (err) {
+					console.log('Error: Task_times - export - ', err);
+				}
+
+				json2csv({ data: times, fields: fields }, function(err, csv) {
+					if (err) {
+						console.log(err);
+					}
+					res.set({"Content-Disposition":"attachment; filename=\"" + times[0].employee_id.name.replace(/ /gi, '+') + "_times.csv\""});
+					res.send(csv);
+				});
 			});
 		}
 	}

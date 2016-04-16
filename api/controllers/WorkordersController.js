@@ -81,5 +81,30 @@ module.exports = {
 				}
 			});
 		}
+	},
+
+	search: function (req, res) {
+		var query = req.query.q;
+		var skip = req.query.skip;
+
+		if (!query) {
+			res.json([]);
+			return;
+		}
+
+		Workorders.find({
+			or: [
+				{id: {'contains': query}},
+				{reference: {'contains': query}}
+			]
+		}).exec(function (err, workorders) {
+			if (err) {
+				console.log('Error: Workorders - search - ', err);
+				res.json([]);
+				return;
+			}
+
+			res.json(workorders);
+		});
 	}
 };

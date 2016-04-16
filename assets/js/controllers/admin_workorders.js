@@ -39,4 +39,15 @@ function (vm, http, $timeout, $window, root, $location, $routeParams) {
 	vm.goBack = function () {
 		$window.history.back();
 	};
+
+	vm.$watch('search.query', function() {
+		if (vm.search && vm.search.query && vm.search.query.length > 2) {
+			http.get('/api/workorders/search?q=' + encodeURI(vm.search.query))
+			.success(function (data) {
+				vm.workorders = data;
+			});
+		} else {
+			getWorkorders();
+		}
+	});
 }]);

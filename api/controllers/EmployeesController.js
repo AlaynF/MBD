@@ -177,6 +177,30 @@ module.exports = {
 
 			res.send('OK');
 		});
+	},
+
+	search: function (req, res) {
+		var query = req.query.q;
+
+		if (!query) {
+			res.json([]);
+			return;
+		}
+
+		Employees.find({
+			or: [
+				{name: {'contains': query}},
+				{email: {'contains': query}}
+			]
+		}).exec(function (err, employees) {
+			if (err) {
+				console.log('Error: Employees - search - ', err);
+				res.json([]);
+				return;
+			}
+
+			res.json(employees);
+		});
 	}
 };
 

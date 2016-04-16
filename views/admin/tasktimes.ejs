@@ -8,12 +8,13 @@
 			<div class="column">
 				<button ng-click="goBack()" class="button is-primary is-medium">Go Back</button>
 				<a href="/dashboard" class="button is-success is-medium">Go to Dashboard</a>
+				<a ng-show="exportUrl" target="_self" href="{{exportUrl}}" class="button is-warning is-medium">Export CSV</a>
 			</div>
 
 			<div class="column">
 				<label class="label">Search</label>
 				<p class="control">
-					<input class="input" type="text" placeholder="Workorder ID or Reference">
+					<input ng-model="search.query" ng-model-options="{ debounce: 250 }" class="input" type="text" placeholder="Workorder ID or Reference">
 				</p>
 			</div>
 		</div>
@@ -26,6 +27,7 @@
 					<td>Task</td>
 					<td>Notes</td>
 					<td>Employee</td>
+					<td>Workorder</td>
 					<td>Time Taken (Minutes)</td>
 					<td>Start Date</td>
 					<td>End Date</td>
@@ -37,11 +39,12 @@
 					<td>{{tasktime.task_id.name}}</td>
 					<td>{{tasktime.notes}}</td>
 					<td>{{tasktime.employee_id.name}}</td>
+					<td>{{tasktime.workorder_reference}}</td>
 					<td>{{tasktime.total_time}}</td>
-					<td>{{tasktime.start_time | date:'medium'}}</td>
-					<td>{{tasktime.end_time | date:'medium'}}</td>
+					<td>{{tasktime.start_time | date:'short'}}</td>
+					<td>{{tasktime.end_time | date:'short'}}</td>
 					<td>
-
+						<a href="/admin/tasktimes?wid={{tasktime.workorder_id}}" class="button is-primary">View Related Times</a>
 					</td>
 				</tr>
 			</tbody>

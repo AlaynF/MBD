@@ -13,7 +13,16 @@
 			<div class="column">
 				<label class="label">Search</label>
 				<p class="control">
-					<input class="input" type="text" placeholder="Search by employee name or email..">
+					<input ng-model="search.query" ng-model-options="{ debounce: 250 }" class="input" type="text" placeholder="Search by employee name or email..">
+				</p>
+				<label class="label">Shops</label>
+				<p class="control">
+					<span class="select">
+						<select ng-model="filter.shop">
+							<option value="" translate>All</option>
+							<option value="{{shop}}" ng-repeat="(shop, value) in listedShops">{{shop}}</option>
+						</select>
+					</span>
 				</p>
 			</div>
 		</div>
@@ -32,7 +41,7 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr ng-repeat="employee in employees">
+				<tr ng-repeat="employee in employees | filter: filterEmployees">
 					<td>{{employee.id}}</td>
 					<td>{{employee.name}}</td>
 					<td>{{employee.admin}}</td>
