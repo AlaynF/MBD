@@ -65,6 +65,20 @@ function (vm, http, $timeout, $window, root, $location, $routeParams) {
 		});
 
 		vm.exportUrl = '/api/task_times/export?tid=' + $routeParams.tid;
+	} else if ($routeParams.sid) {
+		http.get('/api/task_times/get_by_shop?id=' + $routeParams.sid)
+		.success(function (data) {
+			vm.tasktimes = data;
+
+			console.log(data);
+		});
+
+		http.get('/api/shops/get_by_id?id=' + $routeParams.sid)
+		.success(function (data) {
+			vm.shop = data;
+		});
+
+		vm.exportUrl = '/api/task_times/export?tid=' + $routeParams.tid;
 	} else {
 		vm.exportUrl = '/api/task_times/export?all=t';
 		getTasktimes();

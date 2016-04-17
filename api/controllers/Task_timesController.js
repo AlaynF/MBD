@@ -19,17 +19,39 @@ module.exports = {
 	},
 
 	get_by_shop: function (req, res) {
-		if (req.params.id) {
-			Task_times.find({
-				shop_id: req.params.id
-			}).exec(function (err, times) {
-				if (err) {
-					console.log('Error: Task_times - get_by_shop - ', err);
-				}
+		var query = '';
 
-				res.json(times)
-			});
+		query += 'SELECT task_times.*, tasks.name as task_name, employees.name as employee_name ';
+		query += 'FROM task_times ';
+		query += 'LEFT JOIN tasks ON ( ';
+		query += '	tasks.id = task_times.task_id ';
+		query += ') ';
+		query += 'LEFT JOIN employees ON ( ';
+		query += '	employees.id = task_times.employee_id ';
+		query += ') ';
+		query += 'WHERE employee_id IN ( ';
+		query += '	SELECT id ';
+		query += '	FROM employees ';
+		query += '	WHERE shop_id = ? ';
+		query += '); ';
+
+		if (!req.query.id) {
+			res.json([]);
+			return;
 		}
+
+		query = query.replace('?', req.query.id);
+
+		Task_times.query(query, function (err, times) {
+			if (err) {
+				console.log('Error: Task_times - get_by_shop - ', err);
+				res.json([]);
+				return;
+			}
+
+			res.json(times);
+			return;
+		});
 	},
 
 	get_by_employee: function (req, res) {
@@ -176,6 +198,12 @@ module.exports = {
 				console.log('Error: Task_times (Task_times) - continue_task - ', err);
 				return;
 			}
+
+			if (time.pause_time) {
+				add_time = Math.abs(time.pause_time - new Date()) / (1000 * 60); /// MiliSeconds -> Minutes
+			}
+
+			time.total_time = parseFloat(add_time);
 
 			time.start_time = new Date();
 
@@ -325,6 +353,28 @@ module.exports = {
 				}
 			});
 		}
+	},
+
+	add_note: function (req, res) {
+		var data = req.body;
+
+		if (!data || !data.text || !data.id) {
+			res.json({error: 'No reference ID exporting.'});
+			return;
+		}
+
+		Task_times.update({
+			id: data.id
+		}, {
+			notes: data.text
+		}).exec(function (err, times) {
+			if (err) {
+				console.log('Error: Task_times - add_note - ', err);
+				return;
+			}
+
+			res.send('OK');
+		});
 	},
 
 	search: function (req, res) {

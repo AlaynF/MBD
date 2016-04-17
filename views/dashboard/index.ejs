@@ -9,6 +9,7 @@
 				<tr>
 					<td>Workorder</td>
 					<td>Task</td>
+					<td>Notes</td>
 					<td>Status</td>
 					<td>Actions</td>
 				</tr>
@@ -17,6 +18,7 @@
 				<tr ng-repeat="task in openTasks">
 					<td>{{task.workorder_reference}}</td>
 					<td>{{task.task_name}}</td>
+					<td>{{task.notes}}</td>
 					<td>
 						<span ng-if="!task.pause_time" class="tag is-success is-large">Open</span>
 						<span ng-if="task.pause_time"class="tag is-warning is-large">Paused</span>
@@ -25,7 +27,7 @@
 						<button ng-if="!task.pause_time" ng-click="pauseTask(task)" class="button is-large is-warning">PAUSE</button>
 						<button ng-if="task.pause_time" ng-click="continueTask(task)" class="button is-large is-success">CONTINUE</button>
 						<button ng-click="stopTask(task)" class="button is-large is-danger">STOP</button>
-						<button ng-click="addNote(task)" class="button is-large is-primary">Add Note</button>
+						<button ng-click="newNote(task)" class="button is-large is-primary">Add Note</button>
 					</td>
 				</tr>
 			</tbody>
@@ -109,4 +111,27 @@
 		</div>
 	</div>
 	<button ng-click="openNewTask = false" class="modal-close"></button>
+</div>
+
+
+
+<div class="modal" ng-class="{'is-active': openNote == true}">
+	<div ng-click="openNote = false" class="modal-background"></div>
+	<div class="modal-container">
+		<div class="modal-content">
+			<div class="box">
+				<div class="content">
+					<h1 class="title is-2">Add Note</h1>
+
+
+					<p class="control">
+						<textarea ng-model="addNote" class="textarea" placeholder="Notes.."></textarea>
+					</p>
+
+					<button ng-click="submitNote()" ng-disabled="!addNote" class="button is-large is-success">Add Note</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<button ng-click="openNote = false" class="modal-close"></button>
 </div>

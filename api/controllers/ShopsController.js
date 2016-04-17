@@ -16,6 +16,22 @@ module.exports = {
 		});
 	},
 
+	get_by_id: function (req, res) {
+		if (!req.query.id) {
+			res.json({});
+		}
+
+		Shops.findOne({
+			id: req.query.id
+		}).exec(function (err, shops) {
+			if (err) {
+				console.log('Error: Shops - get_all - ', err);
+			}
+
+			res.json(shops);
+		});
+	},
+
 	create: function (req, res) {
 		var data = req.body;
 

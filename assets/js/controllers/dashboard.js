@@ -34,6 +34,23 @@ function (vm, http, $timeout, $window, root, $location) {
 		vm.openNewTask = true;
 	}
 
+	vm.newNote = function (task) {
+		vm.openNote = true;
+		vm.noteTask = task;
+	}
+
+	vm.submitNote = function () {
+		if (vm.addNote) {
+			http.post('/api/task_times/add_note', {
+				text: vm.addNote,
+				id: vm.noteTask.id
+			}).success(function (data) {
+				vm.openNote = false;
+				getOpenTasks();
+			});
+		}
+	}
+
 	vm.optionAction = function (action) {
 		if (action.indexOf('/') == 0) {
 			$location.path(action);

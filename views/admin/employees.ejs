@@ -48,10 +48,10 @@
 					<td>{{employee.shop_id.name}}</td>
 					<td>{{employee.email}}</td>
 					<td>
-						<a href="/admin/workorders?eid={{employee.id}}" class="button is-primary">View Workorders</a>
-						<a href="/admin/tasktimes?eid={{employee.id}}" class="button is-warning">View Task Times</a>
-						<button ng-click="editEmployee(employee)" class="button is-success">Edit Employee</button>
-						<button ng-click="deleteEmployee(employee)" class="button is-danger">Delete Employee</button>
+						<a href="/admin/workorders?eid={{employee.id}}" class="button is-small is-primary">View Workorders</a>
+						<a href="/admin/tasktimes?eid={{employee.id}}" class="button is-small is-warning">View Task Times</a>
+						<button ng-click="editEmployee(employee)" class="button is-small is-success">Edit Employee</button>
+						<button ng-click="deleteEmployee(employee)" class="button is-small is-danger">Delete Employee</button>
 					</td>
 				</tr>
 			</tbody>
