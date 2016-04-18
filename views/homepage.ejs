@@ -2,19 +2,19 @@
 	<div class="container">
 		<div class="keypad is-unselectable">
 		    <input ng-model="passcode" type="password" min="0" inputmode="numeric" pattern="[0-9]*" title="Non-negative integral number" disabled></input>
-			<button ng-mousedown="keypadclick()" class="enter">X</button>
+			<button ng-click="keypadclick()" class="enter">X</button>
 
-		    <button ng-mousedown="keypadclick('1')">1</button>
-		    <button ng-mousedown="keypadclick('2')">2</button>
-		    <button  ng-mousedown="keypadclick('3')">3</button>
-		    <button ng-mousedown="keypadclick('4')">4</button>
-		    <button  ng-mousedown="keypadclick('5')">5</button>
-		    <button  ng-mousedown="keypadclick('6')">6</button>
-		    <button ng-mousedown="keypadclick('7')">7</button>
-		    <button ng-mousedown="keypadclick('8')">8</button>
-		    <button  ng-mousedown="keypadclick('9')">9</button>
+		    <button ng-click="keypadclick('1')">1</button>
+		    <button ng-click="keypadclick('2')">2</button>
+		    <button  ng-click="keypadclick('3')">3</button>
+		    <button ng-click="keypadclick('4')">4</button>
+		    <button  ng-click="keypadclick('5')">5</button>
+		    <button  ng-click="keypadclick('6')">6</button>
+		    <button ng-click="keypadclick('7')">7</button>
+		    <button ng-click="keypadclick('8')">8</button>
+		    <button  ng-click="keypadclick('9')">9</button>
 		    <div>
-		        <button ng-mousedown="keypadclick('0')">0</button>
+		        <button ng-click="keypadclick('0')">0</button>
 		    </div>
 		</div>
 	</div>
