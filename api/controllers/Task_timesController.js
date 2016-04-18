@@ -146,7 +146,7 @@ module.exports = {
 		}
 
 		if (data.notes) {
-			saveDate.notes = notes;
+			saveData.notes = data.notes;
 		}
 
 		Workorders.findOrCreate({
@@ -162,17 +162,19 @@ module.exports = {
 				saveData.workorder_id = workorder.id;
 
 				Task_times.findOpen((data.id || req.user.id), function (err, times) {
+					saveData.start_time = new Date();
+
+					Task_times.create(saveData)
+					.exec(function (err, times) {
+						if (err) {
+							console.log('Error: Task_times - create - ', err);
+						}
+
+						res.send('Ok');
+					});
+
 					if (!times || times.length == 0) {
-						saveData.start_time = new Date();
-
-						Task_times.create(saveData)
-						.exec(function (err, times) {
-							if (err) {
-								console.log('Error: Task_times - create - ', err);
-							}
-
-							res.send('Ok');
-						});
+						///
 					} else if (times) {
 						//CREATE BATCH!!!
 					}

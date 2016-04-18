@@ -9,6 +9,10 @@ mbd.controller('AdminTasktimes', [
 function (vm, http, $timeout, $window, root, $location, $routeParams) {
 	console.log(root.user);
 
+	document.title = 'Task Times - MBD Repair Tools';
+
+	root.$broadcast('changeTitle', {title: 'Task Times'});
+
 	if (!root.user || !root.user.admin) {
 		// $location.path('/');
 	}

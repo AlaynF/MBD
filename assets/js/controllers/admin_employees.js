@@ -8,6 +8,10 @@ mbd.controller('AdminEmployees', [
 function (vm, http, $timeout, $window, root, $location) {
 	vm.listedShops = {};
 
+	document.title = 'Employees - MBD Repair Tools';
+
+	root.$broadcast('changeTitle', {title: 'Employees'});
+
 	if (!root.user || !root.user.admin) {
 		// $location.path('/');
 	}

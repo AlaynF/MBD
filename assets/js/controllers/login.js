@@ -8,7 +8,7 @@ mbd.controller('Login', [
 function (vm, http, $timeout, $window, root, $location) {
 	document.title = 'Login - MBD Repair Tools';
 
-	root.$broadcast('changeTitle', {title: 'Login'});
+	// root.$broadcast('changeTitle', {title: 'Login'});
 
 	vm.passcode = '';
 
