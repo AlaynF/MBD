@@ -75,8 +75,8 @@ function (vm, http, $timeout, $window, root, $location) {
 			task_id: vm.task,
 			notes: vm.notes
 		}).success(function (data) {
-			vm.openNewTask = false;
 			getOpenTasks();
+			vm.openNewTask = false;
 		});
 	}
 
