@@ -32,6 +32,9 @@ function (vm, http, $timeout, $window, root, $location) {
 	vm.newTask = function () {
 		vm.newTaskTime = new Date();
 		vm.openNewTask = true;
+		var element = document.getElementById("startTask");
+
+		element.focus();
 	}
 
 	vm.newNote = function (task) {
