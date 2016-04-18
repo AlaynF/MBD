@@ -4,6 +4,10 @@ window.mbd = angular.module('mbd', ['ngRoute']);
 // 	$httpProvider.interceptors.push('authInterceptor');
 // }]);
 
+mbd.run(function() {
+    FastClick.attach(document.body);
+});
+
 
 mbd.config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
 	$routeProvider
