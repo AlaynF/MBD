@@ -88,11 +88,15 @@ function (vm, http, $timeout, $window, root, $location) {
 	}
 
 	vm.deleteEmployee = function (employee) {
-		http.post('/api/employees/delete', {
-			id: employee.id
-		}).success(function () {
-			getEmployees();
-		});
+		var confirmDelete = (prompt("Are you sure you want to delete this user? This is not reversible. Type 'Delete' below to delete user.").toLowerCase() == "delete");
+
+		if (confirmDelete) {
+			http.post('/api/employees/delete', {
+				id: employee.id
+			}).success(function () {
+				getEmployees();
+			});
+		}
 	}
 
 	vm.goBack = function () {
