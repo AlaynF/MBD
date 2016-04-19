@@ -75,7 +75,7 @@ module.exports = {
 
 		if (data && data.passcode) {
 
-			if (data.passcode.length < 5) {
+			if (data.passcode.length < 4) {
 				res.json({error: 'The passcode chosen is not long enough.'});
 				return;
 			}

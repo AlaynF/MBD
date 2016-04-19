@@ -25,7 +25,7 @@ function (vm, http, $timeout, $window, root, $location) {
 			return;
 		}
 
-		if  (vm.passcode.length > 4) {
+		if  (vm.passcode.length > 3) {
 			http.post('/api/employees/get_by_passcode', {
 				passcode: vm.passcode
 			}).success(function (data) {
