@@ -86,7 +86,7 @@ module.exports = {
 			}
 
 			Employees.findOne({
-				passcode: {'like': data.passcode + '%'}
+				passcode: {'like': data.passcode.substr(0,4) + '%'}
 			}).exec(function (err, employee) {
 				if (err) {
 					console.log('Error: Employees (1) - create - ', err);
