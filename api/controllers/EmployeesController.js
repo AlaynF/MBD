@@ -86,7 +86,7 @@ module.exports = {
 			}
 
 			Employees.findOne({
-				passcode: data.passcode
+				passcode: {'like': data.passcode + '%'}
 			}).exec(function (err, employee) {
 				if (err) {
 					console.log('Error: Employees (1) - create - ', err);
@@ -130,7 +130,7 @@ module.exports = {
 		employee_id = data.id;
 		delete data.id;
 
-		if (data.passcode.length < 5) {
+		if (data.passcode.length < 4) {
 			res.json({error: 'The passcode chosen is not long enough.'});
 			return;
 		}
