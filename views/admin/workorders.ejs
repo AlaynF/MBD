@@ -25,6 +25,8 @@
 					<td>ID</td>
 					<td>Reference</td>
 					<td>Created</td>
+					<td>Shop</td>
+					<td>Total Time (Minutes)</td>
 					<td>Actions</td>
 				</tr>
 			</thead>
@@ -33,6 +35,8 @@
 					<td>{{workorder.id}}</td>
 					<td>{{workorder.reference}}</td>
 					<td>{{workorder.createdAt | date: 'MMM dd, yyyy'}}</td>
+					<td>{{workorder.shop_name}}</td>
+					<td>{{workorder.total_workorder_time}}</td>
 					<td>
 						<a href="/admin/tasktimes?wid={{workorder.id}}" class="button is-primary">View Task Times</a>
 					</td>

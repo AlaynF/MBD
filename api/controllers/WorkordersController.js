@@ -7,7 +7,26 @@
 
 module.exports = {
 	get_all: function (req, res) {
-		Workorders.find().exec(function (err, workorders) {
+		var query = '';
+
+		query += 'SELECT workorders.*, shops.name as shop_name, times.shop_id, times.total_workorder_time ';
+		query += 'FROM workorders ';
+		query += 'LEFT JOIN ( ';
+		query += '	SELECT task_times.workorder_id, employees.*, SUM(task_times.total_time) AS total_workorder_time ';
+		query += '    FROM task_times ';
+		query += '    INNER JOIN employees ON ( ';
+		query += '		employees.id = task_times.employee_id ';
+		query += '    ) ';
+		query += '    GROUP BY workorder_id ';
+		query += ') AS times ON ( ';
+		query += '	times.workorder_id = workorders.id ';
+		query += ') ';
+		query += 'LEFT JOIN shops ON ( ';
+		query += '	shops.id = times.shop_id ';
+		query += ') ';
+		query += 'ORDER BY createdAt DESC; ';
+
+		Workorders.query(query, function (err, workorders) {
 			if (err) {
 				console.log('Error: Workorders - get_all - ', err);
 			}
@@ -46,13 +65,23 @@ module.exports = {
 	get_by_employee: function (req, res) {
 		var query = '';
 
-		query += 'SELECT * ';
+		query += 'SELECT workorders.*, shops.name as shop_name, times.shop_id, times.total_workorder_time ';
 		query += 'FROM workorders ';
-		query += 'WHERE id IN ( ';
-		query += '	SELECT workorder_id ';
+		query += 'INNER JOIN ( ';
+		query += '	SELECT task_times.workorder_id, employees.*, SUM(task_times.total_time) AS total_workorder_time ';
 		query += '    FROM task_times ';
+		query += '    INNER JOIN employees ON ( ';
+		query += '		employees.id = task_times.employee_id ';
+		query += '    ) ';
 		query += '    WHERE employee_id = ? ';
+		query += '    GROUP BY workorder_id ';
+		query += ') AS times ON ( ';
+		query += '	times.workorder_id = workorders.id ';
 		query += ') ';
+		query += 'LEFT JOIN shops ON ( ';
+		query += '	shops.id = times.shop_id ';
+		query += ') ';
+		query += 'ORDER BY createdAt DESC; ';
 
 		if (req.query.eid) {
 			query = query.replace('?', req.query.eid);
