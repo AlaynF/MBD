@@ -1,5 +1,5 @@
 <section ng-controller="Login" class="section">
-	<div class="container">
+	<div ng-show="unlocked" class="container ng-hide">
 		<div class="keypad is-unselectable">
 		    <input ng-model="passcode" type="password" min="0" inputmode="numeric" pattern="[0-9]*" title="Non-negative integral number" disabled></input>
 			<button ng-click="keypadclick()" class="enter">X</button>

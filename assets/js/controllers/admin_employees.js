@@ -66,6 +66,7 @@ function (vm, http, $timeout, $window, root, $location) {
 					root.$broadcast('errorFlash', data.error);
 				} else {
 					vm.openNewEmployee = false;
+					vm.employee = {};
 					getEmployees();
 				}
 			}

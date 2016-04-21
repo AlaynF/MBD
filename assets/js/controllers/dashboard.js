@@ -20,6 +20,11 @@ function (vm, http, $timeout, $window, root, $location) {
 		vm.tasks = data;
 	});
 
+	http.get('/api/task_times/get_latest_tasks')
+	.success(function (data) {
+		vm.recent_tasks = data;
+	});
+
 	(getOpenTasks = function() {http.get('/api/task_times/get_open_by_employee')
 	.success(function ( data) {
 		vm.openTasks = data;
@@ -80,6 +85,10 @@ function (vm, http, $timeout, $window, root, $location) {
 		}).success(function (data) {
 			getOpenTasks();
 			vm.openNewTask = false;
+
+			vm.task = "";
+			vm.notes = "";
+			vm.workorder = "";
 		});
 	}
 
@@ -108,5 +117,9 @@ function (vm, http, $timeout, $window, root, $location) {
 		}).success(function () {
 			getOpenTasks();
 		});
+	}
+
+	vm.setTask = function (task) {
+		vm.task = "" + task.id;
 	}
 }]);

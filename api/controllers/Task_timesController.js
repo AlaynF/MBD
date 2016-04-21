@@ -123,6 +123,37 @@ module.exports = {
 		});
 	},
 
+	get_latest_tasks: function (req, res) {
+		var query = '';
+
+		if (!req.user.id) {
+			res.send('No Task Time Employee ID.');
+			res.status('400');
+			return;
+		}
+
+		query += 'SELECT DISTINCT tasks.name, tasks.id ';
+		query += 'FROM task_times ';
+		query += 'INNER JOIN tasks ON ( ';
+		query += '	tasks.id = task_times.task_id ';
+		query += ') ';
+		query += 'WHERE employee_id = ? ';
+		query += 'ORDER BY task_times.createdAt DESC ';
+		query += 'LIMIT 3; ';
+
+		query = query.replace('?', req.user.id);
+
+		Task_times.query(query, function (err, times) {
+			if (err) {
+				console.log('Error: Task_times - get_latest_tasks - ', err);
+				res.send([]);
+				return;
+			}
+
+			res.send(times);
+		});
+	},
+
 	create: function (req, res) {
 		var saveData = {};
 		var data = req.body;

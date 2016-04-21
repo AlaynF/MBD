@@ -50,8 +50,9 @@
 		</div>
 		<div ng-show="title" class="hero-content">
 	    	<div class="container has-text-centered">
-				<h1 class="title">
-					MBD Repair Tools
+				<h1 class="title is-1">
+					<span ng-if="!last_user">MBD Repair Tools</span>
+					<span ng-if="last_user">{{last_user.name}}</span>
 				</h1>
 				<h2 class="subtitle">
 					{{title}}
@@ -98,6 +99,7 @@
     <script src="/js/controllers/dashboard.js"></script>
     <script src="/js/controllers/login.js"></script>
     <script src="/js/controllers/navigation.js"></script>
+    <script src="/js/controllers/unlock.js"></script>
     <!--SCRIPTS END-->
   </body>
 </html>

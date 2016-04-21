@@ -10,6 +10,13 @@ function (vm, http, $timeout, $window, root, $location) {
 
 	root.$broadcast('changeTitle', {title: ''});
 
+	if (!$window.localStorage.unlocked) {
+		$location.path('/unlock');
+		return;
+	}
+
+	vm.unlocked = true;
+
 	vm.passcode = '';
 
 	vm.keypadclick = function(number) {
@@ -35,7 +42,7 @@ function (vm, http, $timeout, $window, root, $location) {
 
 						root.user = data.user;
 
-						$location.path('/dashboard')
+						$location.path('/dashboard');
 					}
 				}
 			});

@@ -77,6 +77,10 @@
 					<h1 class="title is-2">New Task</h1>
 					<h2 class="subtitle is-3">{{newTaskTime | date:'medium'}}</h2>
 
+					<div class="mbl">
+						<button style="margin-right: 10px" class="button is-info is-large" ng-click="setTask(task)" ng-repeat="task in recent_tasks">{{task.name}}</button>
+					</div>
+
 					<label class="label">Workorder Number</label>
 					<p class="control has-addons">
 						<span class="select">
@@ -86,7 +90,7 @@
 							</select>
 						</span>
 
-						<input ng-model="workorder" class="input" type="text" placeholder="Workorder Number...">
+						<input ng-model="workorder" class="input" type="text" pattern="\d*" placeholder="Workorder Number...">
 					</p>
 
 					<label class="label">Task</label>

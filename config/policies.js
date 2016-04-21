@@ -28,6 +28,10 @@ module.exports.policies = {
 
   '*': 'sessionAuth',
 
+  'dashboard': {
+  	'unlock': true
+  },
+
   'employees': {
   	'get_by_passcode': true
   },

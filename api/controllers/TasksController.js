@@ -84,6 +84,27 @@ module.exports = {
 
 			res.send('OK');
 		});
+	},
+
+	delete: function (req, res) {
+		var data = req.body;
+
+		if (!data || !data.id) {
+			res.json({error: 'There was an error processing your request.'});
+			return;
+		}
+
+		Tasks.destroy({
+			id: data.id
+		}).exec(function (err) {
+			if (err) {
+				console.log('Error: Tasks - delete - ', err);
+				res.json({error: 'There was an error'});
+				return;
+			}
+
+			res.send('OK');
+		});
 	}
 };
 

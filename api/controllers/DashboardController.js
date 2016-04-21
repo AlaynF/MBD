@@ -75,6 +75,24 @@ module.exports = {
 		} else {
 			res.send([]);
 		}
+	},
+
+	unlock: function (req, res) {
+		var data = req.body;
+
+		if (data && data.password) {
+			if (sails.config.password == data.password) {
+				res.json({
+					success: true
+				});
+			} else {
+				res.status('403');
+				res.send('No.')
+			}
+		} else {
+			res.status('403');
+			res.send('No.')
+		}
 	}
 };
 
