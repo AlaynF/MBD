@@ -135,5 +135,54 @@ module.exports = {
 
 			res.json(workorders);
 		});
+	},
+
+
+	get_prefixes: function (req, res) {
+
+		Workorder_prefixes.find().exec(function (err, prefixes) {
+				res.send(prefixes);
+		});
+	},
+
+	createPrefix: function (req, res) {
+		var data = req.body;
+
+		if (data && data.prefix) {
+			Workorder_prefixes.create({
+				prefix: data.prefix
+			}).exec(function (err, prefix)
+			{
+				if (err) {
+					console.log('Error: Prefix - create - ', err);
+					}
+
+				res.send('OK');
+			});
+		}
+	},
+
+	deletePrefix: function (req, res) {
+		var data = req.body;
+
+		if (!data || !data.id) {
+			res.json({error: 'There was an error processing your request.'});
+			return;
+		}
+
+		Workorder_prefixes.destroy({
+			id: data.id
+		}).exec(function (err) {
+
+			if (err) {
+				console.log('Error: Prefixes - delete - ', err);
+				res.json({error: 'There was an error'});
+				return;
+			}
+
+			res.send('OK');
+		});
 	}
+
+
 };
